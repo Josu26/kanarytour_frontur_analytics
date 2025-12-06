@@ -7,7 +7,7 @@ __pycache__/
 *.pyc
 
 # Base de datos local
-db.sqlite3
+
 
 # Archivos estáticos generados
 staticfiles/
