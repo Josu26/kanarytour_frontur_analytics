@@ -1,0 +1,1857 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>KanaryOS · FRONTUR Canarias</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load humanize %}
+    <style>
+        :root {
+            --bg: #020617;
+            --bg-darker: #020617;
+            --bg-card: #020617;
+            --border-subtle: rgba(148,163,184,0.2);
+            --accent: #facc15;
+            --accent-soft: rgba(250,204,21,0.12);
+            --accent-strong: #f97316;
+            --text-main: #e5e7eb;
+            --text-soft: #9ca3af;
+            --danger: #ef4444;
+            --success: #22c55e;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: radial-gradient(circle at top, #0f172a 0, #020617 45%, #000 100%);
+            color: var(--text-main);
+        }
+
+        /* HEADER */
+        header {
+            background: #020617;
+            color: var(--text-main);
+            padding: 14px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(148,163,184,0.3);
+            box-shadow: 0 18px 40px rgba(15,23,42,0.7);
+        }
+
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.15rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .header-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-soft);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-badge {
+            border-radius: 999px;
+            border: 1px solid rgba(148,163,184,0.5);
+            padding: 6px 14px;
+            font-size: 0.75rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: radial-gradient(circle at top left, rgba(15,23,42,0.95), #020617);
+        }
+
+        .header-badge-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: #22c55e;
+            box-shadow: 0 0 10px rgba(34,197,94,0.9);
+        }
+
+        .header-tag {
+            font-size: 0.75rem;
+            border-radius: 999px;
+            padding: 4px 10px;
+            border: 1px solid rgba(148,163,184,0.25);
+            background: rgba(15,23,42,0.9);
+            color: var(--text-soft);
+        }
+
+        /* badge autor */
+        .header-author {
+            font-size: 0.75rem;
+            border-radius: 999px;
+            padding: 4px 12px;
+            border: 1px solid rgba(148,163,184,0.35);
+            background: rgba(15,23,42,0.95);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .header-author span {
+            color: var(--text-soft);
+        }
+
+        .header-author a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .header-author a:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            padding: 24px 32px 32px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Intro + modo analista */
+        .intro-card {
+            margin-bottom: 18px;
+            padding: 14px 18px;
+            border-radius: 18px;
+            border: 1px solid rgba(148,163,184,0.35);
+            background: radial-gradient(circle at top left, rgba(15,23,42,0.9), #020617);
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .intro-text {
+            font-size: 0.86rem;
+            color: var(--text-soft);
+            max-width: 72%;
+        }
+
+        .intro-text strong {
+            color: var(--text-main);
+        }
+
+        .intro-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: flex-end;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 999px;
+            border: 1px solid rgba(250,204,21,0.8);
+            background: radial-gradient(circle at top, rgba(250,204,21,0.14), rgba(15,23,42,0.95));
+            color: var(--accent);
+            font-size: 0.78rem;
+            text-decoration: none;
+        }
+
+        .download-btn span {
+            font-size: 0.9rem;
+        }
+
+        .analyst-tag {
+            font-size: 0.72rem;
+            border-radius: 999px;
+            padding: 3px 9px;
+            border: 1px solid rgba(148,163,184,0.4);
+            color: var(--text-soft);
+            background: rgba(15,23,42,0.9);
+        }
+
+        .filters-bar {
+            margin-bottom: 20px;
+            padding: 10px 14px;
+            border-radius: 18px;
+            border: 1px solid rgba(148,163,184,0.35);
+            background: radial-gradient(circle at top left, rgba(15,23,42,0.95), #020617);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 16px;
+            align-items: center;
+        }
+
+        .filters-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 12px;
+            align-items: center;
+        }
+
+        .filters-field {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            min-width: 120px;
+        }
+
+        .filters-label {
+            font-size: 0.72rem;
+            color: var(--text-soft);
+        }
+
+        .filters-select,
+        .filters-input {
+            background: #020617;
+            color: var(--text-main);
+            border-radius: 999px;
+            border: 1px solid rgba(148,163,184,0.6);
+            padding: 4px 10px;
+            font-size: 0.78rem;
+            min-height: 26px;
+        }
+
+        .filters-input {
+            width: 90px;
+        }
+
+        .filters-actions {
+            display: flex;
+            gap: 8px;
+            margin-left: auto;
+        }
+
+        .filters-submit,
+        .filters-reset {
+            border-radius: 999px;
+            padding: 5px 12px;
+            font-size: 0.78rem;
+            border: 1px solid rgba(148,163,184,0.6);
+            background: rgba(15,23,42,0.95);
+            color: var(--text-main);
+            cursor: pointer;
+        }
+
+        .filters-submit {
+            border-color: rgba(250,204,21,0.9);
+            background: radial-gradient(circle at top, rgba(250,204,21,0.16), rgba(15,23,42,0.96));
+            color: var(--accent);
+        }
+
+        .filters-reset {
+            opacity: 0.9;
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .kpi-grid-secondary {
+            margin-top: -8px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            background: linear-gradient(145deg, rgba(15,23,42,0.95), #020617);
+            border-radius: 20px;
+            padding: 16px 18px;
+            box-shadow:
+                0 22px 45px rgba(15,23,42,0.85),
+                0 0 0 1px rgba(148,163,184,0.12);
+            border: 1px solid rgba(148,163,184,0.25);
+            overflow: hidden; /* evita que el canvas se salga visualmente */
+        }
+
+        .card h2 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin: 0 0 8px 0;
+            color: var(--text-soft);
+        }
+
+        .card-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .card-sub {
+            font-size: 0.8rem;
+            color: var(--text-soft);
+            margin-top: 4px;
+        }
+
+        .card-value-small { font-size: 1.2rem; }
+
+        .kpi-change {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            margin-top: 6px;
+        }
+
+        .kpi-change.positive { color: var(--success); }
+        .kpi-change.negative { color: var(--danger); }
+
+        .kpi-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 999px;
+        }
+
+        .kpi-dot.positive { background: var(--success); }
+        .kpi-dot.negative { background: var(--danger); }
+
+        .tag-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border-radius: 999px;
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            background: var(--accent-soft);
+            color: var(--accent-strong);
+            margin-top: 8px;
+        }
+
+        .tag-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 999px;
+            background: var(--accent-strong);
+        }
+
+        .layout-2col {
+            display: grid;
+            grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .chart-card { /* altura la marca chart-wrapper */ }
+
+        /* card de islas: deja crecer al mapa, evita solapes */
+        .islands-card {
+            height: auto;
+            min-height: 320px;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            width: 100%;
+            height: 230px;
+            margin-top: 8px;
+            overflow: hidden; /* asegura que el canvas no sobresalga */
+        }
+
+        .chart-wrapper canvas {
+            width: 100% !important;
+            height: 100% !important;
+            display: block;
+        }
+
+        .top5-list {
+            margin: 8px 0 0 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .top5-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            padding: 4px 0;
+            border-bottom: 1px solid rgba(148,163,184,0.22);
+        }
+
+        .top5-item span:first-child {
+            max-width: 70%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .top5-item span:last-child {
+            font-variant-numeric: tabular-nums;
+        }
+
+        .table-card { margin-top: 12px; }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 10px;
+        }
+
+        .table-header-title {
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .table-header-sub {
+            font-size: 0.8rem;
+            color: var(--text-soft);
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 16px;
+            border: 1px solid rgba(148,163,184,0.35);
+            background: radial-gradient(circle at top left, rgba(15,23,42,0.95), #020617);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.78rem;
+        }
+
+        thead { background: rgba(15,23,42,0.98); }
+
+        th, td {
+            padding: 8px 10px;
+            border-bottom: 1px solid rgba(148,163,184,0.18);
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        th {
+            font-weight: 600;
+            color: var(--text-soft);
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        tbody tr:nth-child(odd) { background: rgba(15,23,42,0.8); }
+        tbody tr:nth-child(even) { background: rgba(15,23,42,0.55); }
+
+        tbody tr:hover {
+            background: rgba(248,250,252,0.04);
+        }
+
+        .footer {
+            margin-top: 18px;
+            font-size: 0.75rem;
+            color: var(--text-soft);
+            text-align: right;
+            opacity: 0.85;
+        }
+
+        details.table-details { margin-top: 6px; }
+
+        details.table-details summary {
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: var(--text-soft);
+            list-style: none;
+        }
+
+        details.table-details summary::marker { content: ""; }
+
+        details.table-details summary::before {
+            content: "▶";
+            margin-right: 6px;
+            font-size: 0.7rem;
+        }
+
+        details.table-details[open] summary::before { content: "▼"; }
+
+        .chart-controls {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            margin-bottom: 4px;
+            color: var(--text-soft);
+        }
+
+        .chart-controls label { font-size: 0.78rem; }
+
+        .chart-controls select {
+            background: #020617;
+            color: var(--text-main);
+            border-radius: 999px;
+            border: 1px solid rgba(148,163,184,0.5);
+            padding: 4px 10px;
+            font-size: 0.78rem;
+        }
+
+        .mini-table-wrapper {
+            margin-top: 10px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(148,163,184,0.35);
+        }
+
+        .mini-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.78rem;
+        }
+
+        .mini-table th,
+        .mini-table td {
+            padding: 6px 8px;
+            border-bottom: 1px solid rgba(148,163,184,0.2);
+            text-align: left;
+        }
+
+        .mini-table th { color: var(--text-soft); }
+
+        /* BLOQUE ISLAS: chart + mapa real */
+        .islands-combo {
+            display: grid;
+            grid-template-columns: minmax(0, 2fr) minmax(0, 1.6fr);
+            gap: 16px;
+            align-items: stretch;
+            margin-top: 12px;
+        }
+
+        .islands-map-wrapper {
+            position: relative;
+            border-radius: 18px;
+            padding: 8px;
+            border: 1px solid rgba(148,163,184,0.4);
+            background: radial-gradient(circle at top, #020617, #000814);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .islands-map-title {
+            font-size: 0.8rem;
+            color: var(--text-soft);
+            margin-left: 4px;
+        }
+
+        /* contenedor con aspect ratio fijo */
+        .map-container {
+            border-radius: 14px;
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            padding-bottom: 60%; /* altura relativa al ancho */
+        }
+
+        /* Leaflet override para integrarlo con el tema oscuro */
+        .leaflet-container {
+            width: 100%;
+            height: 100%;
+            background: #020617;
+            font-family: inherit;
+        }
+
+        /* el div real del mapa ocupa todo el contenedor */
+        #canaryMap {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .leaflet-control-attribution {
+            font-size: 9px;
+            color: #9ca3af;
+        }
+
+        .leaflet-control-attribution a {
+            color: #e5e7eb;
+        }
+
+        .leaflet-control-zoom a {
+            background: rgba(15,23,42,0.9);
+            color: #e5e7eb;
+            border: 1px solid rgba(148,163,184,0.6);
+        }
+
+        .leaflet-control-zoom a:hover {
+            background: rgba(15,23,42,1);
+        }
+
+        /* ===========================
+           POP-UP FEEDBACK
+        ============================ */
+
+        .feedback-trigger {
+            position: fixed;
+            right: 18px;
+            bottom: 18px;
+            z-index: 40;
+            border-radius: 999px;
+            border: 1px solid rgba(250,204,21,0.9);
+            background: radial-gradient(circle at top, rgba(250,204,21,0.16), rgba(15,23,42,0.98));
+            color: var(--accent);
+            padding: 8px 14px;
+            font-size: 0.78rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            box-shadow: 0 14px 30px rgba(15,23,42,0.8);
+        }
+
+        .feedback-trigger span {
+            font-size: 0.9rem;
+        }
+
+        .feedback-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15,23,42,0.88);
+            backdrop-filter: blur(6px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2100;
+        }
+
+        .feedback-modal-overlay.visible {
+            display: flex;
+        }
+
+        .feedback-modal {
+            width: 100%;
+            max-width: 420px;
+            background: radial-gradient(circle at top left, rgba(15,23,42,0.98), #020617);
+            border-radius: 22px;
+            padding: 18px 20px 16px;
+            border: 1px solid rgba(148,163,184,0.5);
+            box-shadow:
+                0 24px 60px rgba(15,23,42,0.95),
+                0 0 0 1px rgba(15,23,42,0.9);
+            position: relative;
+            z-index: 2200;
+        }
+
+        .feedback-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .feedback-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .feedback-sub {
+            font-size: 0.78rem;
+            color: var(--text-soft);
+        }
+
+        .feedback-close-btn {
+            border: none;
+            background: transparent;
+            color: var(--text-soft);
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .feedback-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 4px;
+        }
+
+        .feedback-field-label {
+            font-size: 0.78rem;
+            color: var(--text-soft);
+            margin-bottom: 3px;
+        }
+
+        .feedback-rating-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .feedback-chip {
+            border-radius: 999px;
+            border: 1px solid rgba(148,163,184,0.6);
+            padding: 4px 9px;
+            font-size: 0.75rem;
+            background: rgba(15,23,42,0.95);
+            color: var(--text-soft);
+            cursor: pointer;
+        }
+
+        .feedback-chip input {
+            display: none;
+        }
+
+        .feedback-chip.selected {
+            border-color: rgba(250,204,21,0.95);
+            background: radial-gradient(circle at top, rgba(250,204,21,0.18), rgba(15,23,42,1));
+            color: var(--accent);
+        }
+
+        .feedback-select {
+            width: 100%;
+            border-radius: 999px;
+            border: 1px solid rgba(148,163,184,0.6);
+            background: #020617;
+            color: var(--text-main);
+            padding: 5px 10px;
+            font-size: 0.78rem;
+        }
+
+        .feedback-textarea {
+            width: 100%;
+            min-height: 70px;
+            border-radius: 12px;
+            border: 1px solid rgba(148,163,184,0.6);
+            background: #020617;
+            color: var(--text-main);
+            padding: 7px 9px;
+            font-size: 0.78rem;
+            resize: vertical;
+        }
+
+        .feedback-inline-note {
+            font-size: 0.72rem;
+            color: var(--text-soft);
+        }
+
+        .feedback-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 4px;
+            gap: 10px;
+        }
+
+        .feedback-submit-btn {
+            border-radius: 999px;
+            border: 1px solid rgba(250,204,21,0.9);
+            padding: 6px 14px;
+            font-size: 0.8rem;
+            background: radial-gradient(circle at top, rgba(250,204,21,0.18), rgba(15,23,42,0.98));
+            color: var(--accent);
+            cursor: pointer;
+        }
+
+        .feedback-secondary-btn {
+            border-radius: 999px;
+            border: 1px solid rgba(148,163,184,0.5);
+            padding: 5px 12px;
+            font-size: 0.76rem;
+            background: rgba(15,23,42,0.96);
+            color: var(--text-soft);
+            cursor: pointer;
+        }
+
+        .feedback-status {
+            font-size: 0.75rem;
+            color: var(--text-soft);
+            margin-top: 6px;
+            min-height: 16px;
+        }
+
+        .feedback-status.success {
+            color: var(--success);
+        }
+
+        .feedback-status.error {
+            color: var(--danger);
+        }
+
+        /* =========================
+           RESPONSIVE
+        ==========================*/
+        @media (max-width: 900px) {
+            main {
+                padding: 16px 14px 24px;
+            }
+
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .intro-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .intro-text {
+                max-width: 100%;
+            }
+
+            .intro-meta {
+                align-items: flex-start;
+            }
+
+            .filters-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .filters-actions {
+                margin-left: 0;
+            }
+
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .layout-2col {
+                grid-template-columns: 1fr;
+            }
+
+            .islands-card {
+                height: auto;
+                min-height: 0;
+            }
+
+            .chart-wrapper {
+                height: 200px;
+            }
+
+            .islands-combo {
+                grid-template-columns: 1fr;
+            }
+
+            .map-container {
+                padding-bottom: 70%;
+            }
+
+            .feedback-trigger {
+                right: 12px;
+                bottom: 12px;
+            }
+        }
+    </style>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Leaflet (mapa real) -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        crossorigin=""
+    />
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        crossorigin="">
+    </script>
+</head>
+
+<body>
+
+<header>
+    <div class="header-left">
+        <h1>KanaryOS · FRONTUR CANARIAS</h1>
+        <div class="header-subtitle">
+            Turismo internacional en Canarias · FRONTUR (ISTAC) · Pipeline ETL → SQLite → Django.
+        </div>
+    </div>
+    <div class="header-right">
+        <span class="header-tag">Portfolio · Data &amp; BI</span>
+
+        <!-- autor + LinkedIn -->
+        <div class="header-author">
+            <span>Creado por</span>
+            <a href="https://www.linkedin.com/in/josueperezcastillo" target="_blank" rel="noopener">
+                Josué D. Pérez
+            </a>
+        </div>
+
+        <div class="header-badge">
+            <span class="header-badge-dot"></span>
+            <span>Pipeline activo</span>
+        </div>
+    </div>
+</header>
+
+<main>
+
+    <!-- Intro + botón descarga + modo analista -->
+    <section class="intro-card">
+        <div class="intro-text">
+            <strong>Panel ejecutivo de turismo internacional en Canarias (FRONTUR – ISTAC).</strong><br>
+            Incluye evolución temporal, impacto COVID, cuota entre islas, mercados principales y patrón estacional
+            a partir del dataset de observaciones FRONTUR para Canarias.
+        </div>
+        <div class="intro-meta">
+            <span class="analyst-tag">Modo analista · filtros avanzados</span>
+            <a href="{% url 'download_clean_csv' %}{% if query_string %}?{{ query_string }}{% endif %}" class="download-btn">
+                <span>⬇</span>
+                <span>Descargar dataset limpio (CSV)</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Filtros avanzados -->
+    <form method="get" class="filters-bar">
+        <div class="filters-group">
+            <div class="filters-field">
+                <span class="filters-label">Residencia</span>
+                <select name="residence" class="filters-select">
+                    <option value="">Todas</option>
+                    {% for res in available_residences %}
+                        <option value="{{ res }}" {% if current_residence == res %}selected{% endif %}>
+                            {{ res }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="filters-field">
+                <span class="filters-label">Isla (bloque islas)</span>
+                <select name="island" class="filters-select">
+                    <option value="">Todas</option>
+                    {% for isl in available_islands %}
+                        <option value="{{ isl }}" {% if current_island == isl %}selected{% endif %}>
+                            {{ isl }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="filters-field">
+                <span class="filters-label">Año desde</span>
+                <select name="year_from" class="filters-select">
+                    <option value="">Min</option>
+                    {% for y in years_available %}
+                        <option value="{{ y }}" {% if current_year_from == y %}selected{% endif %}>
+                            {{ y }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="filters-field">
+                <span class="filters-label">Año hasta</span>
+                <select name="year_to" class="filters-select">
+                    <option value="">Max</option>
+                    {% for y in years_available %}
+                        <option value="{{ y }}" {% if current_year_to == y %}selected{% endif %}>
+                            {{ y }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="filters-group">
+            <div class="filters-field">
+                <span class="filters-label">Comparar año A</span>
+                <select name="year_a" class="filters-select">
+                    <option value="">—</option>
+                    {% for y in years_available %}
+                        <option value="{{ y }}" {% if year_compare_a == y %}selected{% endif %}>
+                            {{ y }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="filters-field">
+                <span class="filters-label">Con año B</span>
+                <select name="year_b" class="filters-select">
+                    <option value="">—</option>
+                    {% for y in years_available %}
+                        <option value="{{ y }}" {% if year_compare_b == y %}selected{% endif %}>
+                            {{ y }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            {% if year_compare_a and year_compare_b and year_compare_delta is not none %}
+                <div class="filters-field">
+                    <span class="filters-label">Resultado comparación</span>
+                    <div style="font-size:0.8rem;">
+                        {% if year_compare_delta >= 0 %}
+                            <span style="color: var(--success);">
+                                +{{ year_compare_delta|floatformat:"1" }} % turistas
+                            </span>
+                        {% else %}
+                            <span style="color: var(--danger);">
+                                {{ year_compare_delta|floatformat:"1" }} % turistas
+                            </span>
+                        {% endif %}
+                        entre <strong>{{ year_compare_a }}</strong> y <strong>{{ year_compare_b }}</strong>.
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="filters-actions">
+            <button type="submit" class="filters-submit">Aplicar filtros</button>
+            <a href="{% url 'dashboard' %}" class="filters-reset">Reset</a>
+        </div>
+    </form>
+
+    <!-- KPIs principales -->
+    <section class="kpi-grid">
+        <article class="card">
+            <h2>Registros cargados</h2>
+            <div class="card-value">
+                {{ total_rows|default:"0"|intcomma }}
+            </div>
+            <div class="card-sub">
+                Filas actualmente leídas de <code>{{ TABLE_NAME }}</code>.
+            </div>
+        </article>
+
+        <article class="card">
+            <h2>Rango temporal</h2>
+            {% if date_min and date_max %}
+                <div class="card-value">{{ date_min }} → {{ date_max }}</div>
+                <div class="card-sub">Basado en combinación <strong>year</strong> + <strong>month</strong>.</div>
+            {% else %}
+                <div class="card-value">N/D</div>
+                <div class="card-sub">No se ha podido calcular el rango temporal.</div>
+            {% endif %}
+        </article>
+
+        <article class="card">
+            <h2>Turistas totales (muestra)</h2>
+            {% if total_visitors is not none %}
+                <div class="card-value">{{ total_visitors|floatformat:"0"|intcomma }}</div>
+                <div class="card-sub">Suma de la columna <strong>tourists</strong> en el subconjunto cargado.</div>
+                <div class="tag-pill">
+                    <span class="tag-dot"></span>
+                    <span>Fuente: ISTAC · FRONTUR</span>
+                </div>
+            {% else %}
+                <div class="card-value">N/D</div>
+                <div class="card-sub">No se ha podido sumar la columna de turistas.</div>
+            {% endif %}
+        </article>
+    </section>
+
+    <!-- KPIs avanzados -->
+    <section class="kpi-grid kpi-grid-secondary">
+        <article class="card">
+            <h2>Turistas últimos 12 meses</h2>
+            {% if kpi_last_12m is not none %}
+                <div class="card-value card-value-small">
+                    {{ kpi_last_12m|floatformat:"0"|intcomma }}
+                </div>
+                <div class="card-sub">
+                    Suma de los últimos 12 meses disponibles (todas las residencias).
+                </div>
+            {% else %}
+                <div class="card-value card-value-small">N/D</div>
+                <div class="card-sub">
+                    No hay 12 meses disponibles en el subconjunto de datos.
+                </div>
+            {% endif %}
+        </article>
+
+        <article class="card">
+            <h2>vs 12 meses anteriores</h2>
+            {% if kpi_last_12m is not none and kpi_prev_12m is not none and kpi_last_12m_growth_pct is not none %}
+                <div class="card-value card-value-small">
+                    {{ kpi_prev_12m|floatformat:"0"|intcomma }}
+                </div>
+                <div class="kpi-change {% if kpi_last_12m_growth_pct >= 0 %}positive{% else %}negative{% endif %}">
+                    <span class="kpi-dot {% if kpi_last_12m_growth_pct >= 0 %}positive{% else %}negative{% endif %}"></span>
+                    <span>
+                        {% if kpi_last_12m_growth_pct >= 0 %}+{% endif %}
+                        {{ kpi_last_12m_growth_pct|floatformat:"1" }} %
+                        vs periodo anterior
+                    </span>
+                </div>
+                <div class="card-sub">
+                    Comparación de tráfico entre los últimos 12 meses y los 12 anteriores.
+                </div>
+            {% else %}
+                <div class="card-value card-value-small">N/D</div>
+                <div class="card-sub">
+                    No hay suficientes datos para comparar dos periodos de 12 meses.
+                </div>
+            {% endif %}
+        </article>
+
+        <article class="card">
+            <h2>Mes pico de turistas</h2>
+            {% if best_period_label and best_period_value %}
+                <div class="card-value card-value-small">
+                    {{ best_period_value|floatformat:"0"|intcomma }}
+                </div>
+                <div class="card-sub">
+                    Máximo mensual en <strong>{{ best_period_label }}</strong> (todas las residencias).
+                </div>
+            {% else %}
+                <div class="card-value card-value-small">N/D</div>
+                <div class="card-sub">
+                    No se pudo identificar un mes pico con los datos actuales.
+                </div>
+            {% endif %}
+        </article>
+    </section>
+
+    <!-- Gráfico principal + Top 5 países -->
+    <section class="layout-2col">
+        <article class="card chart-card">
+            <div class="chart-controls">
+                <label for="residenceFilter">Serie mostrada:</label>
+                <select id="residenceFilter">
+                    <option value="__all__">Todas las residencias (agregado)</option>
+                    {% for item in top_residences %}
+                        <option value="{{ item.residence }}">{{ item.residence }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <h2>Evolución mensual total de turistas</h2>
+            <div class="card-sub">
+                Serie agregada para todas las residencias o para el país seleccionado. Estacionalidad y shocks (COVID, etc.).
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="touristsChart"></canvas>
+            </div>
+        </article>
+
+        <article class="card">
+            <h2>Top 5 países de residencia</h2>
+            <div class="card-sub">
+                Según turistas acumulados en el subconjunto de datos cargado.
+            </div>
+            <ul class="top5-list">
+                {% if top_residences %}
+                    {% for item in top_residences %}
+                        <li class="top5-item">
+                            <span title="{{ item.residence }}">{{ item.residence }}</span>
+                            <span>{{ item.tourists|floatformat:"0"|intcomma }}</span>
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <li class="top5-item">
+                        <span>No hay datos suficientes.</span>
+                        <span>—</span>
+                    </li>
+                {% endif %}
+            </ul>
+
+            {% if main_market_name and main_market_share and top3_share %}
+                <div class="card-sub" style="margin-top: 10px;">
+                    Mercado principal: <strong>{{ main_market_name }}</strong>
+                    ({{ main_market_share|floatformat:"1" }} % del total).<br>
+                    Los 3 primeros mercados concentran
+                    <strong>{{ top3_share|floatformat:"1" }} %</strong> de los turistas.
+                </div>
+            {% endif %}
+        </article>
+    </section>
+
+    <!-- COMPARATIVA ENTRE ISLAS + MAPA REAL + REPARTO -->
+    <section class="layout-2col">
+        <!-- Izquierda: comparativa + mapa -->
+        <article class="card chart-card islands-card">
+            <h2>Comparativa entre islas</h2>
+            <div class="card-sub">
+                Cuota de turistas por isla en los últimos 12 meses disponibles (todas las residencias).
+            </div>
+
+            <div class="islands-combo">
+                <!-- Bar chart -->
+                <div class="chart-wrapper">
+                    <canvas id="islandsChart"></canvas>
+                </div>
+
+                <!-- Mapa real con Leaflet -->
+                <div class="islands-map-wrapper">
+                    <div class="islands-map-title">
+                        Mapa real de Canarias · Cuota por isla (últimos 12 meses).
+                    </div>
+                    <div class="map-container">
+                        <div id="canaryMap"></div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- Derecha: reparto de turistas por islas -->
+        <article class="card">
+            <h2>Reparto de turistas por islas</h2>
+            {% if islands_total_12m is not none %}
+                <div class="card-sub">
+                    • Turistas últimos 12 meses (todas las islas):
+                    <strong>{{ islands_total_12m|intcomma }}</strong>.<br>
+                    {% if island_leader_name and island_leader_share %}
+                        • Isla líder:
+                        <strong>{{ island_leader_name }}</strong>
+                        ({{ island_leader_share|floatformat:"1" }} % del total anual).<br>
+                    {% endif %}
+                    {% if islands_top3_share %}
+                        • Las 3 islas con mayor tráfico concentran
+                        <strong>{{ islands_top3_share|floatformat:"1" }} %</strong> de los turistas.
+                    {% endif %}
+                </div>
+
+                <div class="mini-table-wrapper">
+                    <table class="mini-table">
+                        <thead>
+                            <tr>
+                                <th>Isla</th>
+                                <th>Turistas 12M</th>
+                                <th>Cuota</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in islands_table %}
+                                <tr>
+                                    <td>{{ item.island }}</td>
+                                    <td>{{ item.tourists_12m|intcomma }}</td>
+                                    <td>{{ item.share_pct|floatformat:"1" }} %</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="card-sub">
+                    No hay información de islas suficiente para el último año en la tabla de islas.
+                </div>
+            {% endif %}
+        </article>
+    </section>
+
+    <!-- Estacionalidad + impacto COVID -->
+    <section class="layout-2col">
+        <article class="card chart-card">
+            <h2>Patrón estacional típico</h2>
+            <div class="card-sub">
+                Media de turistas por mes a lo largo de todos los años disponibles.
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="seasonalityChart"></canvas>
+            </div>
+        </article>
+
+        <article class="card">
+            <h2>Impacto COVID y recuperación</h2>
+            {% if baseline_avg is not none and covid_min_label and covid_min_val is not none and covid_drop_pct is not none %}
+                <div class="card-sub">
+                    • Media mensual pre-COVID (≤ 2019):
+                    <strong>{{ baseline_avg|floatformat:"0"|intcomma }}</strong> turistas.<br>
+                    • Mínimo en <strong>{{ covid_min_label }}</strong>:
+                    <strong>{{ covid_min_val|floatformat:"0"|intcomma }}</strong>
+                    ({{ covid_drop_pct|floatformat:"1" }} % vs media previa).<br>
+                    {% if recovery_month_label %}
+                        • Recuperación (≥ 90 % de la media pre-COVID) a partir de
+                        <strong>{{ recovery_month_label }}</strong>.
+                    {% else %}
+                        • Aún no se ha alcanzado el 90 % de la media pre-COVID en el periodo cargado.
+                    {% endif %}
+                </div>
+            {% else %}
+                <div class="card-sub">
+                    No hay suficiente histórico para calcular el impacto de la COVID con esta muestra.
+                </div>
+            {% endif %}
+        </article>
+    </section>
+
+    <!-- Tabla detallada colapsada -->
+    <section class="card table-card">
+        <details class="table-details">
+            <summary>Ver tabla detallada (modo analista)</summary>
+
+            <div class="table-header">
+                <div class="table-header-title">
+                    Últimos registros FRONTUR Canarias (hasta 500 filas)
+                </div>
+                <div class="table-header-sub">
+                    {% if columns %}
+                        {{ columns|length }} columnas · {{ total_rows|intcomma }} filas
+                    {% else %}
+                        Sin datos cargados
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            {% for col in columns %}
+                                <th>{{ col }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% if rows %}
+                            {% for row in rows %}
+                                <tr>
+                                    {% for cell in row %}
+                                        <td>{{ cell }}</td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="{% if columns %}{{ columns|length }}{% else %}1{% endif %}">
+                                    No hay registros para mostrar.
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="footer">
+                Proyecto portfolio · Datos: ISTAC (FRONTUR Canarias, observaciones) · Renderizado desde SQLite con Django.
+                <br>
+                Autor: Josué D. Pérez ·
+                <a href="https://www.linkedin.com/in/josueperezcastillo" target="_blank" rel="noopener"
+                   style="color:#facc15;text-decoration:none;">
+                    linkedin.com/in/josueperezcastillo
+                </a>
+            </div>
+        </details>
+    </section>
+
+</main>
+
+<!-- BOTÓN FLOTANTE DE FEEDBACK -->
+<button type="button" class="feedback-trigger" id="feedbackTrigger">
+    <span>💬</span>
+    <span>Feedback del dashboard</span>
+</button>
+
+<!-- MODAL FEEDBACK -->
+<div class="feedback-modal-overlay" id="feedbackModalOverlay" aria-hidden="true">
+    <div class="feedback-modal" role="dialog" aria-modal="true" aria-labelledby="feedbackTitle">
+        <div class="feedback-header">
+            <div>
+                <div class="feedback-title" id="feedbackTitle">
+                    ¿Qué te ha parecido este dashboard?
+                </div>
+                <div class="feedback-sub">
+                    Tu opinión me ayuda a mejorar el portfolio y los próximos proyectos.
+                </div>
+            </div>
+            <button type="button" class="feedback-close-btn" id="feedbackCloseBtn" aria-label="Cerrar">
+                ✕
+            </button>
+        </div>
+
+        <form class="feedback-form" id="feedbackForm">
+            <div>
+                <div class="feedback-field-label">
+                    En general, ¿cómo valorarías este dashboard?
+                </div>
+                <div class="feedback-rating-group" id="feedbackRatingGroup">
+                    <label class="feedback-chip">
+                        <input type="radio" name="rating" value="1">
+                        1 · Necesita mucho trabajo
+                    </label>
+                    <label class="feedback-chip">
+                        <input type="radio" name="rating" value="2">
+                        2 · Mejorable
+                    </label>
+                    <label class="feedback-chip">
+                        <input type="radio" name="rating" value="3">
+                        3 · Correcto
+                    </label>
+                    <label class="feedback-chip">
+                        <input type="radio" name="rating" value="4">
+                        4 · Muy bien
+                    </label>
+                    <label class="feedback-chip">
+                        <input type="radio" name="rating" value="5">
+                        5 · Excelente
+                    </label>
+                </div>
+            </div>
+
+            <div>
+                <div class="feedback-field-label">
+                    ¿Qué te ha parecido más?
+                </div>
+                <select name="aspect" class="feedback-select">
+                    <option value="">Selecciona una opción</option>
+                    <option value="claridad">La claridad de la historia de datos</option>
+                    <option value="diseno">El diseño y visualización</option>
+                    <option value="interaccion">Los filtros e interacción</option>
+                    <option value="insights">Los insights y KPIs elegidos</option>
+                    <option value="otro">Otra cosa</option>
+                </select>
+            </div>
+
+            <div>
+                <div class="feedback-field-label">
+                    Comentario (opcional)
+                </div>
+                <textarea
+                    name="comment"
+                    class="feedback-textarea"
+                    placeholder="¿Qué mejorarías o qué te ha gustado especialmente?"></textarea>
+                <div class="feedback-inline-note">
+                    Puedes dejarlo en blanco si vas con prisa.
+                </div>
+            </div>
+
+            <div class="feedback-actions">
+                <button type="button" class="feedback-secondary-btn" id="feedbackNotNowBtn">
+                    Ahora no
+                </button>
+                <button type="submit" class="feedback-submit-btn">
+                    Enviar feedback
+                </button>
+            </div>
+
+            <div class="feedback-status" id="feedbackStatus"></div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Serie total (todas las residencias)
+    const chartLabelsAll = JSON.parse('{{ chart_labels|escapejs }}');
+    const chartValuesAll = JSON.parse('{{ chart_values|escapejs }}');
+
+    // Estacionalidad media por mes
+    const seasonLabels = JSON.parse('{{ season_labels|escapejs }}');
+    const seasonValues = JSON.parse('{{ season_values|escapejs }}');
+
+    // Series por residencia
+    const SERIES_BY_RESIDENCE = JSON.parse('{{ series_per_residence_json|escapejs }}');
+
+    // Datos por islas
+    const ISLAND_LABELS = JSON.parse('{{ island_labels_json|escapejs }}');
+    const ISLAND_SHARES = JSON.parse('{{ island_shares_json|escapejs }}');
+    const ISLANDS_MAP = JSON.parse('{{ islands_map_json|escapejs }}');
+
+    // =========================
+    //  GRÁFICO PRINCIPAL
+    // =========================
+    const ctx = document.getElementById('touristsChart');
+    let touristsChart = null;
+
+    if (ctx && chartLabelsAll.length > 0) {
+        touristsChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: chartLabelsAll,
+                datasets: [{
+                    label: 'Turistas totales (todas las residencias)',
+                    data: chartValuesAll,
+                    borderWidth: 2,
+                    tension: 0.25,
+                    pointRadius: 2.5,
+                    pointHitRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
+                scales: {
+                    x: { ticks: { maxTicksLimit: 8 } },
+                    y: {
+                        beginAtZero: false,
+                        ticks: {
+                            callback: function(value) {
+                                return value.toLocaleString('es-ES');
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: { font: { size: 11 } }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const v = context.parsed.y || 0;
+                                return ' ' + v.toLocaleString('es-ES') + ' turistas';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Selector de residencia
+    const filterSelect = document.getElementById('residenceFilter');
+    if (filterSelect && touristsChart) {
+        filterSelect.addEventListener('change', function () {
+            const value = this.value;
+            let labels = chartLabelsAll;
+            let values = chartValuesAll;
+            let labelText = 'Turistas totales (todas las residencias)';
+
+            if (value !== '__all__' && SERIES_BY_RESIDENCE[value]) {
+                labels = SERIES_BY_RESIDENCE[value].labels;
+                values = SERIES_BY_RESIDENCE[value].values;
+                labelText = 'Turistas desde ' + value;
+            }
+
+            touristsChart.data.labels = labels;
+            touristsChart.data.datasets[0].data = values;
+            touristsChart.data.datasets[0].label = labelText;
+            touristsChart.update();
+        });
+    }
+
+    // =========================
+    //  ESTACIONALIDAD
+    // =========================
+    const ctxSeason = document.getElementById('seasonalityChart');
+    if (ctxSeason && seasonLabels.length > 0) {
+        new Chart(ctxSeason, {
+            type: 'bar',
+            data: {
+                labels: seasonLabels,
+                datasets: [{
+                    label: 'Media mensual de turistas',
+                    data: seasonValues
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        ticks: {
+                            callback: function(value) {
+                                return value.toLocaleString('es-ES');
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: { font: { size: 11 } }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const v = context.parsed.y || 0;
+                                return ' ' + v.toLocaleString('es-ES') + ' turistas';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // =============================
+    //  COMPARATIVA ISLAS + MAPA REAL
+    // =============================
+
+    // 1) Gráfico de barras
+    const ctxIslands = document.getElementById('islandsChart');
+    let islandsChart = null;
+
+    if (ctxIslands && ISLAND_LABELS.length > 0) {
+        islandsChart = new Chart(ctxIslands, {
+            type: 'bar',
+            data: {
+                labels: ISLAND_LABELS,
+                datasets: [{
+                    label: '% de turistas (últimos 12 meses)',
+                    data: ISLAND_SHARES,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            callback: function(value) {
+                                return value + ' %';
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: { font: { size: 11 } }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(ctx) {
+                                const v = ctx.parsed.y || 0;
+                                return ' ' + v.toFixed(1) + ' % de los turistas';
+                            }
+                        }
+                    }
+                },
+                onHover: (event, elements) => {
+                    if (elements && elements.length > 0) {
+                        const idx = elements[0].index;
+                        const islandName = ISLAND_LABELS[idx];
+                        highlightIslandOnMap(islandName, false);
+                    } else {
+                        highlightIslandOnMap(null, false);
+                    }
+                },
+                onClick: (event, elements) => {
+                    if (elements && elements.length > 0) {
+                        const idx = elements[0].index;
+                        const islandName = ISLAND_LABELS[idx];
+                        highlightIslandOnMap(islandName, true);
+                    }
+                }
+            }
+        });
+    }
+
+    // 2) Mapa Leaflet
+    const mapDiv = document.getElementById('canaryMap');
+    let leafletMap = null;
+    const islandMarkers = {};
+
+    function refreshMapSize() {
+        if (leafletMap) {
+            leafletMap.invalidateSize();
+        }
+    }
+
+    if (mapDiv && typeof L !== 'undefined') {
+        // centro aproximado de Canarias
+        leafletMap = L.map('canaryMap', {
+            zoomControl: true,
+            attributionControl: true
+        }).setView([28.4, -15.6], 6);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 10,
+            minZoom: 5,
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(leafletMap);
+
+        // Coordenadas aproximadas por isla
+        const ISLAND_COORDS = {
+            "Tenerife": [28.293, -16.621],
+            "Gran Canaria": [27.95, -15.6],
+            "Lanzarote": [29.04, -13.64],
+            "Fuerteventura": [28.35, -14.05],
+            "La Palma": [28.68, -17.86]
+        };
+
+        ISLANDS_MAP.forEach(info => {
+            const name = info.island;
+            const coords = ISLAND_COORDS[name];
+            if (!coords) return;
+
+            const share = info.share_pct || 0;
+            const baseRadius = 6 + (share / 8); // escala simple
+
+            const marker = L.circleMarker(coords, {
+                radius: baseRadius,
+                color: '#facc15',
+                weight: 1.2,
+                fillColor: '#facc15',
+                fillOpacity: 0.7
+            }).addTo(leafletMap);
+
+            marker._baseRadius = baseRadius;
+            marker._share = share;
+            marker._name = name;
+
+            const touristsText = Math.round(info.tourists_12m || 0).toLocaleString('es-ES');
+            marker.bindPopup(
+                `<strong>${name}</strong><br>` +
+                `${touristsText} turistas<br>` +
+                `${share.toFixed(1)} % del total`
+            );
+
+            marker.on('mouseover', () => highlightIslandOnMap(name, false));
+            marker.on('mouseout', () => highlightIslandOnMap(null, false));
+            marker.on('click', () => highlightIslandOnMap(name, true));
+
+            islandMarkers[name] = marker;
+        });
+
+        // Forzamos a Leaflet a recalcular el tamaño
+        setTimeout(refreshMapSize, 400);
+        window.addEventListener('resize', refreshMapSize);
+    }
+
+    function highlightIslandOnMap(islandName, openPopup) {
+        if (!leafletMap) return;
+
+        Object.values(islandMarkers).forEach(m => {
+            m.setRadius(m._baseRadius);
+            m.setStyle({
+                color: '#facc15',
+                fillColor: '#facc15',
+                weight: 1.2,
+                fillOpacity: 0.7
+            });
+        });
+
+        if (!islandName || !islandMarkers[islandName]) return;
+
+        const marker = islandMarkers[islandName];
+        marker.setRadius(marker._baseRadius + 4);
+        marker.setStyle({
+            color: '#f97316',
+            fillColor: '#facc15',
+            weight: 2,
+            fillOpacity: 0.85
+        });
+
+        if (openPopup) {
+            marker.openPopup();
+            leafletMap.panTo(marker.getLatLng(), { animate: true, duration: 0.4 });
+        }
+    }
+
+    // =========================
+    //  LÓGICA POP-UP FEEDBACK
+    // =========================
+
+    const feedbackTrigger = document.getElementById('feedbackTrigger');
+    const feedbackModalOverlay = document.getElementById('feedbackModalOverlay');
+    const feedbackCloseBtn = document.getElementById('feedbackCloseBtn');
+    const feedbackNotNowBtn = document.getElementById('feedbackNotNowBtn');
+    const feedbackForm = document.getElementById('feedbackForm');
+    const feedbackStatus = document.getElementById('feedbackStatus');
+    const feedbackRatingGroup = document.getElementById('feedbackRatingGroup');
+
+    function openFeedbackModal() {
+        if (!feedbackModalOverlay) return;
+        feedbackModalOverlay.classList.add('visible');
+        feedbackModalOverlay.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeFeedbackModal() {
+        if (!feedbackModalOverlay) return;
+        feedbackModalOverlay.classList.remove('visible');
+        feedbackModalOverlay.setAttribute('aria-hidden', 'true');
+    }
+
+    // Marcar chips seleccionados visualmente
+    if (feedbackRatingGroup) {
+        feedbackRatingGroup.addEventListener('click', (event) => {
+            const label = event.target.closest('.feedback-chip');
+            if (!label) return;
+
+            feedbackRatingGroup.querySelectorAll('.feedback-chip').forEach(chip => {
+                chip.classList.remove('selected');
+            });
+            label.classList.add('selected');
+            const input = label.querySelector('input[type="radio"]');
+            if (input) input.checked = true;
+        });
+    }
+
+    if (feedbackTrigger) {
+        feedbackTrigger.addEventListener('click', () => {
+            openFeedbackModal();
+        });
+    }
+
+    if (feedbackCloseBtn) {
+        feedbackCloseBtn.addEventListener('click', () => {
+            localStorage.setItem('portfolio_feedback_dismissed', 'true');
+            closeFeedbackModal();
+        });
+    }
+
+    if (feedbackNotNowBtn) {
+        feedbackNotNowBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.setItem('portfolio_feedback_dismissed', 'true');
+            closeFeedbackModal();
+        });
+    }
+
+    if (feedbackModalOverlay) {
+        feedbackModalOverlay.addEventListener('click', (e) => {
+            if (e.target === feedbackModalOverlay) {
+                localStorage.setItem('portfolio_feedback_dismissed', 'true');
+                closeFeedbackModal();
+            }
+        });
+    }
+
+    if (feedbackForm) {
+        feedbackForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            feedbackStatus.classList.remove('success', 'error');
+            feedbackStatus.textContent = '';
+
+            const formData = new FormData(feedbackForm);
+            const rating = formData.get('rating') || '';
+            const aspect = formData.get('aspect') || '';
+            const comment = (formData.get('comment') || '').toString().trim();
+
+            if (!rating) {
+                feedbackStatus.classList.add('error');
+                feedbackStatus.textContent = 'Por favor, selecciona una valoración.';
+                return;
+            }
+
+            const payload = {
+                rating,
+                aspect,
+                comment,
+                page: 'kanarytour_frontur_dashboard',
+                timestamp: new Date().toISOString()
+            };
+
+            console.log('Nuevo feedback portfolio:', payload);
+
+            feedbackStatus.classList.add('success');
+            feedbackStatus.textContent = '¡Gracias por tu feedback!';
+
+            localStorage.setItem('portfolio_feedback_submitted', 'true');
+
+            setTimeout(() => {
+                closeFeedbackModal();
+            }, 1200);
+        });
+    }
+
+    // Mostrar automáticamente (solo una vez) tras unos segundos
+    (function autoOpenFeedbackOnce() {
+        const alreadySubmitted = localStorage.getItem('portfolio_feedback_submitted') === 'true';
+        const alreadyDismissed = localStorage.getItem('portfolio_feedback_dismissed') === 'true';
+
+        if (alreadySubmitted || alreadyDismissed) return;
+
+        setTimeout(() => {
+            openFeedbackModal();
+        }, 20000); // 20 segundos
+    })();
+</script>
+
+</body>
+</html>

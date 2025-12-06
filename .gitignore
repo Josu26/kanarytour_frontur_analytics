@@ -1,7 +1,16 @@
+# Entorno virtual
 .venv/
+venv/
+
+# Archivos de Python compilados
 __pycache__/
 *.pyc
-data/raw/*
-data/processed/*
+
+# Base de datos local
 db.sqlite3
+
+# Archivos estáticos generados
+staticfiles/
+
+# Otros
 .env
