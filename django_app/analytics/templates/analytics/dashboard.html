@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>KanaryOS · FRONTUR Canarias</title>
+    <title>KanariOS · FRONTUR Canarias</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Evita que iOS convierta números en teléfonos -->
     <meta name="format-detection" content="telephone=no">
@@ -107,7 +107,7 @@
         }
 
         .header-author {
-            position: relative;          /* para que el tooltip se posicione respecto a este chip */
+            position: relative;
             font-size: 0.78rem;
             border-radius: 999px;
             padding: 5px 12px;
@@ -201,7 +201,6 @@
         }
 
         @media (max-width: 768px) {
-            /* en móvil lo desactivamos para no molestar */
             .author-tooltip {
                 display: none;
             }
@@ -965,7 +964,7 @@
 <header>
     <div class="header-inner">
         <div class="header-left">
-            <h1>KanaryOS · FRONTUR CANARIAS</h1>
+            <h1>KanariOS · FRONTUR CANARIAS</h1>
             <div class="header-subtitle">
                 Turismo internacional en Canarias · FRONTUR (ISTAC) · Pipeline ETL → SQLite → Django.
             </div>
@@ -1120,8 +1119,8 @@
     <section class="kpi-grid">
         <article class="card">
             <h2>Registros cargados</h2>
-            <div class="card-value">
-                {{ total_rows|default:"0"|intcomma }}
+            <div class="card-value js-number">
+                {{ total_rows|default:"0" }}
             </div>
             <div class="card-sub">
                 Filas actualmente leídas de <code>{{ TABLE_NAME }}</code>.
@@ -1142,7 +1141,7 @@
         <article class="card">
             <h2>Turistas totales (muestra)</h2>
             {% if total_visitors is not none %}
-                <div class="card-value">{{ total_visitors|floatformat:"0"|intcomma }}</div>
+                <div class="card-value js-number">{{ total_visitors|floatformat:"0" }}</div>
                 <div class="card-sub">Suma de la columna <strong>tourists</strong> en el subconjunto cargado.</div>
                 <div class="tag-pill">
                     <span class="tag-dot"></span>
@@ -1160,8 +1159,8 @@
         <article class="card">
             <h2>Turistas últimos 12 meses</h2>
             {% if kpi_last_12m is not none %}
-                <div class="card-value card-value-small">
-                    {{ kpi_last_12m|floatformat:"0"|intcomma }}
+                <div class="card-value card-value-small js-number">
+                    {{ kpi_last_12m|floatformat:"0" }}
                 </div>
                 <div class="card-sub">
                     Suma de los últimos 12 meses disponibles (todas las residencias).
@@ -1177,8 +1176,8 @@
         <article class="card">
             <h2>vs 12 meses anteriores</h2>
             {% if kpi_last_12m is not none and kpi_prev_12m is not none and kpi_last_12m_growth_pct is not none %}
-                <div class="card-value card-value-small">
-                    {{ kpi_prev_12m|floatformat:"0"|intcomma }}
+                <div class="card-value card-value-small js-number">
+                    {{ kpi_prev_12m|floatformat:"0" }}
                 </div>
                 <div class="kpi-change {% if kpi_last_12m_growth_pct >= 0 %}positive{% else %}negative{% endif %}">
                     <span class="kpi-dot {% if kpi_last_12m_growth_pct >= 0 %}positive{% else %}negative{% endif %}"></span>
@@ -1202,8 +1201,8 @@
         <article class="card">
             <h2>Mes pico de turistas</h2>
             {% if best_period_label and best_period_value %}
-                <div class="card-value card-value-small">
-                    {{ best_period_value|floatformat:"0"|intcomma }}
+                <div class="card-value card-value-small js-number">
+                    {{ best_period_value|floatformat:"0" }}
                 </div>
                 <div class="card-sub">
                     Máximo mensual en <strong>{{ best_period_label }}</strong> (todas las residencias).
@@ -1248,7 +1247,7 @@
                     {% for item in top_residences %}
                         <li class="top5-item">
                             <span title="{{ item.residence }}">{{ item.residence }}</span>
-                            <span>{{ item.tourists|floatformat:"0"|intcomma }}</span>
+                            <span class="js-number">{{ item.tourists|floatformat:"0" }}</span>
                         </li>
                     {% endfor %}
                 {% else %}
@@ -1303,7 +1302,7 @@
             {% if islands_total_12m is not none %}
                 <div class="card-sub">
                     • Turistas últimos 12 meses (todas las islas):
-                    <strong>{{ islands_total_12m|intcomma }}</strong>.<br>
+                    <strong class="js-number">{{ islands_total_12m }}</strong>.<br>
                     {% if island_leader_name and island_leader_share %}
                         • Isla líder:
                         <strong>{{ island_leader_name }}</strong>
@@ -1328,7 +1327,7 @@
                             {% for item in islands_table %}
                                 <tr>
                                     <td>{{ item.island }}</td>
-                                    <td>{{ item.tourists_12m|intcomma }}</td>
+                                    <td class="js-number">{{ item.tourists_12m }}</td>
                                     <td>{{ item.share_pct|floatformat:"1" }} %</td>
                                 </tr>
                             {% endfor %}
@@ -1360,9 +1359,9 @@
             {% if baseline_avg is not none and covid_min_label and covid_min_val is not none and covid_drop_pct is not none %}
                 <div class="card-sub">
                     • Media mensual pre-COVID (≤ 2019):
-                    <strong>{{ baseline_avg|floatformat:"0"|intcomma }}</strong> turistas.<br>
+                    <strong class="js-number">{{ baseline_avg|floatformat:"0" }}</strong> turistas.<br>
                     • Mínimo en <strong>{{ covid_min_label }}</strong>:
-                    <strong>{{ covid_min_val|floatformat:"0"|intcomma }}</strong>
+                    <strong class="js-number">{{ covid_min_val|floatformat:"0" }}</strong>
                     ({{ covid_drop_pct|floatformat:"1" }} % vs media previa).<br>
                     {% if recovery_month_label %}
                         • Recuperación (≥ 90 % de la media pre-COVID) a partir de
@@ -1390,7 +1389,8 @@
                 </div>
                 <div class="table-header-sub">
                     {% if columns %}
-                        {{ columns|length }} columnas · {{ total_rows|intcomma }} filas
+                        <span class="js-number">{{ columns|length }}</span> columnas ·
+                        <span class="js-number">{{ total_rows }}</span> filas
                     {% else %}
                         Sin datos cargados
                     {% endif %}
@@ -1536,6 +1536,38 @@
 </div>
 
 <script>
+    // =========================
+    // FORMATEO DE NÚMEROS HTML
+    // =========================
+    document.addEventListener('DOMContentLoaded', function () {
+        const nodes = document.querySelectorAll('.js-number');
+        nodes.forEach(function (el) {
+            let raw = (el.textContent || '').trim();
+
+            if (!raw) return;
+
+            // Quitar espacios y separadores raros
+            raw = raw.replace(/\s/g, '');
+
+            // Si ya tiene % o cualquier cosa rara, lo dejamos
+            if (raw.includes('%')) return;
+
+            // Normalizar: quitar puntos de miles y usar punto como decimal para parsear
+            let normalized = raw.replace(/\./g, '').replace(',', '.');
+
+            const value = Number(normalized);
+            if (isNaN(value)) return;
+
+            // Si el texto original tenía decimales, usamos 1 decimal, si no, 0
+            const hasDecimal = /[.,]\d+/.test(raw);
+            const options = hasDecimal
+                ? { minimumFractionDigits: 1, maximumFractionDigits: 1 }
+                : { minimumFractionDigits: 0, maximumFractionDigits: 0 };
+
+            el.textContent = value.toLocaleString('es-ES', options);
+        });
+    });
+
     // Serie total (todas las residencias)
     const chartLabelsAll = JSON.parse('{{ chart_labels|escapejs }}');
     const chartValuesAll = JSON.parse('{{ chart_values|escapejs }}');
