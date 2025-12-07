@@ -137,6 +137,11 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
+# 🔥 ESTO ES LO QUE FALTABA 🔥
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # <--- apunta a C:\Users\jdpc1\projects\kanarytour_frontur_analytics\static
+]
+
 # Carpeta donde collectstatic volcará todo (para producción)
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
